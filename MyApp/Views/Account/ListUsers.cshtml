@@ -8,15 +8,7 @@
 
 @if (Model.Any())
 {
-    <div class="row">
-        <div class="col col-10"></div>
-        <div class="col col-1">
-            <a asp-action="Register" asp-controller="Account"
-               class="btn btn-primary">
-                Add new user
-            </a>
-        </div>
-    </div>
+
     <div class="justify-content-center">
         <div class="card-body ">
             <div class="form-group">
@@ -38,22 +30,22 @@
                                     <td>@user.Email</td>
                                     @if (user.LockoutEnabled == false)
                                     {
-                                        <td>  <i class="fas fa-check"></i></td>
+                                        <td>  yes</td>
                                     }
                                     else
                                     {
-                                        <td><i class="fas fa-times"></i></td>
+                                        <td>No</td>
                                     }
-                                <td>
-                                    @using (Html.BeginForm("ChangeUserStatus", "Account", new { email=user.Email}))
-                                    {
-                                        <button onclick="return confirm('Are you sure you want to change user status : @user.Email')"
-                                                class="btn btn-success font-weight-bold"
-                                                value="@user.Email.ToString()">
-                                            @(user.LockoutEnabled == false ?
+                                    <td>
+                                        @using (Html.BeginForm("ChangeUserStatus", "Account", new { email = user.Email }))
+                                        {
+                                            <button onclick="return confirm('Are you sure you want to change user status : @user.Email')"
+                                                    class="btn btn-success font-weight-bold"
+                                                    value="@user.Email.ToString()">
+                                                @(user.LockoutEnabled == false ?
                                             Html.Raw("Disable User") : Html.Raw("Enable User"))
-                                        </button>
-                                    }
+                                            </button>
+                                        }
                                     </td>
                                 </tr>
                             }

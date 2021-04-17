@@ -201,15 +201,15 @@ namespace MyApp.Controllers
             _appDbContext.order_Details.Remove(DeletedOrderDetails);
             _appDbContext.SaveChanges();
 
-            var CurrentOrderItems = _appDbContext.order_Details
-                                    .Where(o => o.Order_Header.Order_Header_ID == Convert.ToInt32(OrderHeaderID)).Count();
-            if (CurrentOrderItems == 0)
-            {
-                var DeletedOrderHeader = new Order_Header { Order_Header_ID = Convert.ToInt32(OrderHeaderID) };
-                _appDbContext.order_Header.Remove(DeletedOrderHeader);
-                _appDbContext.SaveChanges();
+            //var CurrentOrderItems = _appDbContext.order_Details
+            //                        .Where(o => o.Order_Header.Order_Header_ID == Convert.ToInt32(OrderHeaderID)).Count();
+            //if (CurrentOrderItems == 0)
+            //{
+            //    var DeletedOrderHeader = new Order_Header { Order_Header_ID = Convert.ToInt32(OrderHeaderID) };
+            //    _appDbContext.order_Header.Remove(DeletedOrderHeader);
+            //    _appDbContext.SaveChanges();
 
-            }
+            //}
                                  
             return RedirectToAction("GetCardItems");
         }
@@ -316,5 +316,28 @@ namespace MyApp.Controllers
             return RedirectToAction("GetCardItems");
         }
 
+        [HttpGet]
+        public IActionResult AddUom()
+        {
+            return View();
+        
+        }
+        [HttpPost]
+        public IActionResult AddUom(UOM model)
+        {
+            if (ModelState.IsValid)
+            {
+                _appDbContext.uOM.Add(model);
+                _appDbContext.SaveChanges();
+            }
+            return RedirectToAction("ListUom");
+        }
+        [HttpGet]
+        public IActionResult ListUom()
+        {
+            var ListOfUom = _appDbContext.uOM.ToList();
+            return View(ListOfUom);
+
+        }
     }
 }

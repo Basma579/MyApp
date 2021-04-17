@@ -144,9 +144,9 @@ namespace MyApp.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult ListUsers()
+        public async Task< IActionResult> ListUsers()
         {
-            var users = userManager.Users;
+            var users =await userManager.GetUsersInRoleAsync("Customer");
             return View(users);
         }
 
@@ -176,10 +176,6 @@ namespace MyApp.Controllers
             return RedirectToAction("ListUsers");
 
         }
-
-
-     
-
 
 
     }
