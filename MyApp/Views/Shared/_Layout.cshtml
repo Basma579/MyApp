@@ -46,18 +46,21 @@
                 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 {
                     <li class="nav-item active">
-                        <a class="nav-link" asp-controller="Home" asp-action="AddItem">Add Item</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-controller="Home" asp-action="AllItems">All Items</a>
-                    </li>
-
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-controller="Home" asp-action="AddUom">Add Uom</a>
-                    </li>
-                    <li class="nav-item active">
                         <a class="nav-link" asp-controller="Account" asp-action="ListUsers">Customers</a>
                     </li>
+
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Items Managment
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" asp-controller="Home" asp-action="AddItem">Add Item</a>
+                            <a class="dropdown-item" asp-controller="Home" asp-action="AllItems">All Items</a>
+                            <a class="dropdown-item" asp-controller="Home" asp-action="AddUom">Add Uom</a>
+                            <a class="dropdown-item" asp-controller="Home" asp-action="ListUom">All Uom</a>
+                        </div>
+                    </li>
+
                 }
                 <li class="nav-item active">
                     <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
