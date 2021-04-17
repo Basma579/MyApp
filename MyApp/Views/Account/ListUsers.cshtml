@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewData["Title"] = "All Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if (Model.Any())
+{
+    <div class="row">
+        <div class="col col-10"></div>
+        <div class="col col-1">
+            <a asp-action="Register" asp-controller="Account"
+               class="btn btn-primary">
+                Add new user
+            </a>
+        </div>
+    </div>
+    <div class="justify-content-center">
+        <div class="card-body ">
+            <div class="form-group">
+                <div class="table-responsive row">
+                    <table class="table" style="width:80%">
+                        <thead>
+                            <tr>
+                                <th scope="col">Email </th>
+                                <th scope="col">Active</th>
+                                <th scope="col">De Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+
+                                    <td>@user.Email</td>
+                                    @if (user.LockoutEnabled == false)
+                                    {
+                                        <td>  <i class="fas fa-check"></i></td>
+                                    }
+                                    else
+                                    {
+                                        <td><i class="fas fa-times"></i></td>
+                                    }
+                                <td>
+                                    @using (Html.BeginForm("ChangeUserStatus", "Account", new { email=user.Email}))
+                                    {
+                                        <button onclick="return confirm('Are you sure you want to change user status : @user.Email')"
+                                                class="btn btn-success font-weight-bold"
+                                                value="@user.Email.ToString()">
+                                            @(user.LockoutEnabled == false ?
+                                            Html.Raw("Disable User") : Html.Raw("Enable User"))
+                                        </button>
+                                    }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No users created yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button below to create a user
+            </h5>
+            <a class="btn btn-primary" style="width:auto"
+               asp-controller="Account" asp-action="Register">
+                Add new user
+            </a>
+        </div>
+    </div>
+}
+
+

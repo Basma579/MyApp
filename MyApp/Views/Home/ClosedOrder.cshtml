@@ -1,0 +1,140 @@
+﻿@model IEnumerable<MyApp.Models.Order_Details>
+
+@{
+    ViewData["Title"] = "Closed Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+
+<h2>My Card </h2>
+<br />
+@if (Model != null)
+{
+    <div id="div_Order">
+        <table class="table" style="border:none ; background-color:white">
+            <thead>
+                <tr>
+                    <th>
+                        Customer Name
+                    </th>
+                    <th>
+                        Taxs
+                    </th>
+                    <th>
+                        Total Discount
+                    </th>
+                    <th>
+                        Total Value
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@User.Identity.Name</td>
+                    <td>14%</td>
+                    <td> @Model.Sum(i => i.Discount)</td>
+                    <td> @Model.Sum(i => i.TotalPrice + (decimal.Parse(0.14.ToString()) * i.TotalPrice))</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <br />
+        <br />
+        <h2>Order Details </h2>
+
+        <table class="table" style="border:none ; background-color:white">
+            <thead>
+                <tr>
+                    <th>
+                        Product
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Uom)
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quantity)
+                    </th>
+
+                    <th>
+                        Total Discount
+                    </th>
+                    <th>
+                        Total Price
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Uom)
+                        </td>
+                        <td>
+
+                            @((item.ItemPrice - ( item.Discount / item.Quantity)).ToString())
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+
+                            @if (item.Discount > 0)
+                            {
+                                <p> @((item.Quantity * item.Discount).ToString())</p>
+                            }
+                            else
+                            {
+                                <p>0</p>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPrice)
+
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+            <tfoot>
+
+                <tr>
+                    <th scope="row">Totals</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>  @Model.Sum(i => i.TotalPrice)</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <input type="button" id="printPageButton" onclick="Print()" value="Print" class="btn btn-primary">
+
+}
+
+else
+{
+    <h1 style="color:red ; font-size:x-large ; font-weight:bold">Shopping Card Is Empty</h1>
+}
+<script type="text/javascript">
+    function Print() {
+        window.print();
+    }
+</script> 

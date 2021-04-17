@@ -1,0 +1,54 @@
+﻿@model MyApp.Models.RegisterViewModel
+@inject Microsoft.Extensions.Configuration.IConfiguration configuration
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html>
+<body>
+    <div class="mb-20">
+        <h3>Create New User</h3>
+<br/>    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+<form class="form" id="kt_login_signup_form">
+    <div class="form-group mb-5">
+
+        <div class="form-group mb-5">
+            <input class="form-control" data-val="true" data-val-email="The Email field is not a valid e-mail address."
+                   data-val-remote="'Email' is invalid." data-val-remote-additionalfields="*.Email"
+                   data-val-remote-url="/Account/IsEmailInUse" data-val-required="The Email field is required."
+                   id="Email" name="Email" type="email" value="" aria-describedby="Email-error" aria-invalid="false" placeholder="Email">
+
+            @Html.ValidationMessageFor(model => model.Email, null, new { @class = "validation" })
+        </div>
+
+        <div class="form-group mb-5">
+            <input class="form-control" data-val="true" data-val-length="length between 4 than 20 characters."
+                   data-val-length-max="20" data-val-length-min="6" data-val-regex="Password Must Contain  Digits , Lower , Upper and Special Characters." placeholder="Password"
+                   data-val-regex-pattern="^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)).+$" data-val-required="The Password field is required."
+                   id="Password" maxlength="20" name="Password" type="password" value="">
+
+            @Html.ValidationMessageFor(model => model.Password, null, new { @class = "validation" })
+        </div>
+
+        <div class="form-group mb-5">
+            <input class="form-control" data-val="true" data-val-equalto="Password and confirmation password do not match."
+                   data-val-equalto-other="*.Password" id="ConfirmPassword" name="ConfirmPassword" type="password" value="" placeholder="Confirm Password">
+
+            @Html.ValidationMessageFor(model => model.ConfirmPassword, null, new { @class = "validation" })
+        </div>
+
+    </div>
+
+        <input type="submit" value="Create" class="btn btn-primary" />
+</form>
+
+
+    }
+</body>
+</html>
+
+

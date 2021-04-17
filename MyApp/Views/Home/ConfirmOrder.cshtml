@@ -1,0 +1,113 @@
+﻿@model IEnumerable<MyApp.Models.Order_Details>
+
+@{
+    ViewData["Title"] = "ConfirmOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+
+<h2>My Card </h2>
+<br />
+
+<br />
+<br />
+
+<table class="table" style="border:none ; background-color:white">
+    <thead>
+        <tr>
+            <th>
+                Product
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Uom)
+            </th>
+            <th>
+                Price After Discount
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+
+            <th>
+                Discount Per Item
+            </th>
+            <th>
+                Total Price
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Uom)
+                </td>
+                <td>
+                    <label id="Price_@item.ItemID">
+                        @((item.ItemPrice - item.Discount ).ToString())
+                    </label>
+
+                </td>
+                <td>
+                    @using (Html.BeginForm())
+                    {
+                        
+                            <input type="submit" asp-action="ChangeQuantity" asp-route-ItemID="@item.ItemID" asp-route-IsIncrease="true" class="fa fa-plus" value="+" style="font-weight:bold; font-size:larger ; background-color:cornflowerblue; color:white" />
+                            <label id="SelectedQuantity_@item.ItemID">  @Html.DisplayFor(modelItem => item.Quantity)</label>
+                      
+                            <input type="submit" class="fa fa-plus"   asp-action="ChangeQuantity" asp-route-ItemID="@item.ItemID" asp-route-IsIncrease="false" value="-" style="font-weight:bold; font-size:larger ; background-color:cornflowerblue ; color:white"/>
+                    }
+                    </td>
+                <td>
+                    @item.Discount
+
+                    <input type="hidden" id="Discount_@item.ItemID" value="@item.Discount">
+                </td>
+                <td>
+                    <label id="TotalPrice_@item.ItemID">
+                        @Html.DisplayFor(modelItem => item.TotalPrice)
+                    </label>
+
+
+                </td>
+
+                <td>
+                    <form asp-action="DeleteOrderItem" asp-controller="Home">
+                        <input type="submit" asp-action="DeleteOrderItem" asp-controller="Home"
+                               asp-route-Order_Details_ID="@item.Order_Details_ID" value="Remove" class="btn btn-danger">
+
+                    </form>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+    <tfoot>
+
+        <tr>
+            <th scope="row">Totals</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>  @Model.Sum(i => i.TotalPrice)</td>
+        </tr>
+    </tfoot>
+</table>
+<form asp-action="ConfirmOrder" asp-controller="Home">
+    <input type="submit" asp-action="ConfirmOrder" asp-controller="Home" value="Confirm Order" asp-route-TotalValue="@Model.Sum(i => i.TotalPrice)"
+           asp-route-TotalDiscount="@Model.Sum(i => i.Discount)" class="btn btn-primary"
+           onclick=" return confirm('Are you sure you want to confirm this order?' ) ">
+</form>
+
+

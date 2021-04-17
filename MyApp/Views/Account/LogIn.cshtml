@@ -1,0 +1,53 @@
+﻿@model MyApp.Models.LoginViewModel
+@inject Microsoft.Extensions.Configuration.IConfiguration configuration
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<html>
+
+<body>
+    <div class="mb-20">
+        <h3>LogIn</h3>
+<br/>
+    </div>
+    @using (Html.BeginForm())
+    {
+
+    @Html.ValidationSummary(true, "", new { @style = "color: red" })
+    <form class="form" id="kt_login_signup_form">
+
+        <div class="form-group mb-5">
+            <div class="form-group mb-5">
+                <input class="form-control" data-val="true" data-val-email="The Email field is not a valid e-mail address."
+                       data-val-required="The Email field is required."
+                       id="Email" name="Email" type="email" value="" aria-describedby="Email-error" aria-invalid="false" placeholder="Email">
+                @Html.ValidationMessageFor(model => model.Email, null, new { @class = "validation" })
+            </div>
+            <div class="form-group mb-5">
+                <input class="form-control" data-val="true"
+                       data-val-required="The Password field is required."
+                       id="Password" name="Password" type="Password" value="" aria-describedby="Password-error" aria-invalid="false" placeholder="Password">
+                @Html.ValidationMessageFor(model => model.Password, null, new { @class = "validation" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-wrap flex-center mt-10">
+            <input type="submit" value="login" class="btn btn-primary" />
+        </div>
+
+        <div class="form-group d-flex flex-wrap justify-content-between align-items-center">
+            <div class="checkbox-inline">
+                <label class="checkbox m-0 text-muted">
+                    @Html.EditorFor(model => model.RememberMe, new { id = "RememberMe" })
+                    <span></span>Remember me
+                </label>
+            </div>
+            <a href="../Account/Register" id="kt_login_forgot" class="text-muted text-hover-primary"> Create Account</a>
+        </div>
+    </form>
+    }
+
+</body>
+</html>
