@@ -5,7 +5,8 @@
 }
 
 
-<br/><br/>
+<br />
+<br />
 @using (Html.BeginForm("Index", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
@@ -13,120 +14,116 @@
 
     <span class='badge badge-warning' id='lblCartCount'> 0 </span>
 
-    <div class="card-deck">
+    <div style="width:100%;display:flex;flex-wrap:wrap">
         @for (var i = 0; i < Model.Items.Count(); i++)
         {
-  
 
-                <div class=" card "  style="width: 50%;" id="card_@Model.Items[i].ItemD">
 
-                    <div class="card-header">
-                        <h4 style="color:cornflowerblue">
-                            @Model.Items[i].Name
-                        </h4>
-                    </div>
 
-                    <div class="card-body ">
+            <div class="card" style="width:250px;margin:10px" id="card_@Model.Items[i].ItemD">
 
-                        @if (Model.Items[i].Discount > 0)
-                        {
-                            <h3 style="color:black ; font-weight:bold">
-                                @((Model.Items[i].Price - Model.Items[i].Discount).ToString()) $
-                            </h3>
-                            <span> <strike> @Model.Items[i].Price $ </strike>&nbsp;   &nbsp;   </span>
-                            <span style=" height: 50px; width: 50px; background-color: coral;"> -  @Model.Items[i].Discount </span>
-                        }
-                        else
-                        {
-                            <h3 style="color:black ; font-weight:bold">
-                                @Model.Items[i].Price $
-                            </h3>
+                <div class="card-header">
+                    <h4 style="color:cornflowerblue">
+                        @Model.Items[i].Name
+                    </h4>
+                </div>
 
-                        }
-                        <br />
-                        <br />
-                        <br />
-                        <input type="button" class="fa fa-plus" value="+" style="font-weight:bold; font-size:larger ; background-color:cornflowerblue; color:white" onclick="ChangeQuantity(@Model.Items[i].ItemD , true)" />
-                        &nbsp;
-                        <label id="SelectedQuantity_@Model.Items[i].ItemD">0 </label>
-                        &nbsp;
-                        <input type="button" class="fa fa-plus" value="-" style="font-weight:bold; font-size:larger ; background-color:cornflowerblue ; color:white" ; onclick="ChangeQuantity(@Model.Items[i].ItemD , false)" />
+                <div class="card-body ">
 
-                    </div>
-
-                    <div class="card-footer">
-                        <input type="button" id="@Model.Items[i].ItemD" style="font-weight:bold" value="Add To Card" onclick="AddItemsIds(@Model.Items[i].ItemD)" />
-                    </div>
-                    <input type="hidden" asp-for="@Model.Items[i].ItemD">
-                    <input type="hidden" asp-for="@Model.Items[i].Name">
-                    <input type="hidden" asp-for="@Model.Items[i].Price">
-                    <input type="hidden" asp-for="@Model.Items[i].Discount">
-                    <input type="hidden" asp-for="@Model.Items[i].Uom">
-                    <input type="hidden" asp-for="@Model.Items[i].Quantity" id="Qty_@Model.Items[i].ItemD">
+                    @if (Model.Items[i].Discount > 0)
+                    {
+                        <h3 style="color:black ; font-weight:bold">
+                            @((Model.Items[i].Price - Model.Items[i].Discount).ToString()) $
+                        </h3>
+                        <span> <strike> @Model.Items[i].Price $ </strike>&nbsp; &nbsp; </span>
+                        <span style=" height: 50px; width: 50px; background-color: coral;"> - @Model.Items[i].Discount </span> }
+                    else
+                    {
+                        <h3 style="color:black ; font-weight:bold">
+                            @Model.Items[i].Price $
+                        </h3>}
+                    <br />
+                    <br />
+                    <br />
+                    <input type="button" class="fa fa-plus" value="+" style="font-weight:bold; font-size:larger ; background-color:cornflowerblue; color:white" onclick="ChangeQuantity(@Model.Items[i].ItemD , true)" />
+                    &nbsp;
+                    <label id="SelectedQuantity_@Model.Items[i].ItemD">0 </label>
+                    &nbsp;
+                    <input type="button" class="fa fa-plus" value="-" style="font-weight:bold; font-size:larger ; background-color:cornflowerblue ; color:white" ; onclick="ChangeQuantity(@Model.Items[i].ItemD , false)" />
 
                 </div>
 
-   
+                <div class="card-footer">
+                    <input type="button" id="@Model.Items[i].ItemD" style="font-weight:bold" value="Add To Card" onclick="AddItemsIds(@Model.Items[i].ItemD)" />
+                </div>
+                <input type="hidden" asp-for="@Model.Items[i].ItemD">
+                <input type="hidden" asp-for="@Model.Items[i].Name">
+                <input type="hidden" asp-for="@Model.Items[i].Price">
+                <input type="hidden" asp-for="@Model.Items[i].Discount">
+                <input type="hidden" asp-for="@Model.Items[i].Uom">
+                <input type="hidden" asp-for="@Model.Items[i].Quantity" id="Qty_@Model.Items[i].ItemD">
+
+            </div>}
+    </div>
+
+
+    <input type="hidden" asp-for="SelecedIds" id="hiddenIDs">
+    <br />
+    <b />
+
+    <button type="submit" class="btn btn-primary" disabled id="btn_Confirm_Order">Make Order</button>
+}
+
+<script language="javascript" type="text/javascript">
+    var ItemsIDs = [];
+    function AddItemsIds(id) {
+        if (ItemsIDs.includes(id) === false) {
+            $('#' + id).attr('value', 'Remove From Card')
+            $('#card_' + id).attr('class', 'card border-primary m-3')
+            ItemsIDs.push(id);
+            var SelectedQuantity = document.getElementById('SelectedQuantity_' + id).innerHTML;
+            if (SelectedQuantity == 0) {
+                ChangeQuantity(id, true);
+            }
+        }
+        else {
+            $('#' + id).attr('value', 'Add To Card')
+            $('#card_' + id).attr('class', 'card m-3')
+            ItemsIDs.pop(id);
+        }
+        var SelectedQuantity = document.getElementById('SelectedQuantity_' + id).innerHTML;
+
+
+        $('#lblCartCount').text(ItemsIDs.length)
+        $("#hiddenIDs").val(ItemsIDs);
+        if (ItemsIDs.length > 0) {
+            document.getElementById("btn_Confirm_Order").disabled = false;
+        }
+        else {
+            document.getElementById("btn_Confirm_Order").disabled = true;
+        }
+    }
+
+    function ChangeQuantity(id, isUP) {
+        var value = document.getElementById('SelectedQuantity_' + id).innerHTML;
+
+        if (isUP) {
+            document.getElementById('SelectedQuantity_' + id).innerHTML = Number(value) + 1;
+            $('#Qty_' + id).val(Number(value) + 1);
+
+
+        }
+        else {
+            if (value > 0) {
+                document.getElementById('SelectedQuantity_' + id).innerHTML -= 1
+                $('#Qty_' + id).val(value - 1);
 
             }
+        }
+    }
+</script>
 
 
-        </div>
-                <input type="hidden" asp-for="SelecedIds" id="hiddenIDs"><br/> <b/>
+<script src="~/lib/jquery/dist/jquery.js"></script>
 
-                <button type="submit" class="btn btn-primary"  disabled id="btn_Confirm_Order">Make Order</button>
-                }
-
-                <script language="javascript" type="text/javascript">
-                    var ItemsIDs = [];
-                    function AddItemsIds(id) {
-                        if (ItemsIDs.includes(id) === false) {
-                            $('#' + id).attr('value', 'Remove From Card')
-                            $('#card_' + id).attr('class', 'card border-primary m-3')
-                            ItemsIDs.push(id);
-                            var SelectedQuantity = document.getElementById('SelectedQuantity_' + id).innerHTML;
-                            if (SelectedQuantity == 0) {
-                                ChangeQuantity(id, true);
-                            }
-                        }
-                        else {
-                            $('#' + id).attr('value', 'Add To Card')
-                            $('#card_' + id).attr('class', 'card m-3')
-                            ItemsIDs.pop(id);
-                        }
-                        var SelectedQuantity = document.getElementById('SelectedQuantity_' + id).innerHTML;
-
-
-                        $('#lblCartCount').text(ItemsIDs.length)
-                        $("#hiddenIDs").val(ItemsIDs);
-                        if (ItemsIDs.length > 0) {
-                            document.getElementById("btn_Confirm_Order").disabled = false;
-                        }
-                        else {
-                            document.getElementById("btn_Confirm_Order").disabled = true;
-                            }
-                    }
-
-                    function ChangeQuantity(id, isUP) {
-                        var value = document.getElementById('SelectedQuantity_' + id).innerHTML;
-
-                        if (isUP) {
-                            document.getElementById('SelectedQuantity_' + id).innerHTML = Number(value) + 1;
-                            $('#Qty_' + id).val(Number(value) + 1);
-
-
-                        }
-                        else {
-                            if (value > 0) {
-                                document.getElementById('SelectedQuantity_' + id).innerHTML -= 1
-                                $('#Qty_' + id).val(value - 1);
-
-                            }
-                        }
-                    }
-                </script>
-
-
-                <script src="~/lib/jquery/dist/jquery.js"></script>
-
-                <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>

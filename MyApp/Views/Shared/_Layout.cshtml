@@ -11,65 +11,47 @@
 </head>
 <body>
     <header>
-        @*<nav class="navbar navbar-expand-md navbar-light bg-light">
-            <div class="container">
-                @if (SignInManager.IsSignedIn(User))
-                {
+        @if (SignInManager.IsSignedIn(User) )
+        { 
 
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="GetCardItems">MyApp</a>
-
-
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="navbar-brand" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    @if (User.IsInRole("Customer"))
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-controller="Home" asp-action="GetCardItems">My Card</a>
+                        </li>
+                    }
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item active">
+                                <a class="nav-link" asp-controller="Account" asp-action="ListUsers">Customers</a>
                             </li>
 
-                        </ul>
-                    </div>
-                }
-            </div>
-        </nav>*@
+                            <li class="nav-item dropdown active">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Items Managment
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="AddItem">Add Item</a>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="AllItems">All Items</a>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="AddUom">Add Uom</a>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="ListUom">All Uom</a>
+                                </div>
+                            </li>
 
-        <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">Home</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" asp-controller="Home" asp-action="GetCardItems">My Card</a>
-                </li>
-                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                {
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-controller="Account" asp-action="ListUsers">Customers</a>
-                    </li>
-
-                    <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Items Managment
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" asp-controller="Home" asp-action="AddItem">Add Item</a>
-                            <a class="dropdown-item" asp-controller="Home" asp-action="AllItems">All Items</a>
-                            <a class="dropdown-item" asp-controller="Home" asp-action="AddUom">Add Uom</a>
-                            <a class="dropdown-item" asp-controller="Home" asp-action="ListUom">All Uom</a>
-                        </div>
-                    </li>
-
-                }
-                <li class="nav-item active">
-                    <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
-                </li>
-            </ul>
-        </nav>
+                        }
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-controller="Account" asp-action="LogOut">Logout</a>
+                        </li>
+                    </ul>
+            </nav>
 
 
-
+        }
     </header>
     <div class="container">
         @RenderBody()

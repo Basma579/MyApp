@@ -57,7 +57,7 @@ namespace MyApp.Controllers
                     UserName = model.Email,
                     Email = model.Email,
                     EmailConfirmed = true,
-                    LockoutEnabled=false
+                    LockoutEnabled = false
 
                 };
                 var result = await userManager.CreateAsync(user, model.Password);
@@ -66,7 +66,7 @@ namespace MyApp.Controllers
                     bool adminRoleExists = await roleManager.RoleExistsAsync("Customer");
                     if (!adminRoleExists)
                     {
-                      await roleManager.CreateAsync(new IdentityRole("Customer"));
+                        await roleManager.CreateAsync(new IdentityRole("Customer"));
                     }
                     await userManager.AddToRoleAsync(user, "Customer");
                     return RedirectToAction("Login", "Account");
@@ -76,7 +76,7 @@ namespace MyApp.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-           
+
 
             return View(model);
         }

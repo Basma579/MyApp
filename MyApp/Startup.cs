@@ -32,8 +32,7 @@ namespace MyApp
             services.AddSession();
             services.AddHttpContextAccessor();
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
@@ -83,7 +82,7 @@ namespace MyApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=FreeTrial}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
                 endpoints.MapRazorPages();
                 //endpoints.MapHub<ChatHub>("/chatHub");
             });
